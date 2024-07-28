@@ -5,6 +5,8 @@ const mongoose = require("mongoose")
 const authRoutes = require('./routes/auth')
 const userRoutes = require('./routes/user')
 const { initSocket } = require('./socket/index')
+const helmet = require('helmet');
+const path = require('path');
 
 const PORT=process.env.PORT || 5001;
 
@@ -13,9 +15,31 @@ mongoose.set('strictQuery', true);
 const app = express()
 require('dotenv').config()
 
-app.use((req, res, next) => {
-  res.setHeader("Content-Security-Policy", "default-src 'self'; script-src 'self' 'blob:'");
-  next();
+// Use Helmet to set CSP
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", 'blob:'],
+        scriptSrcElem: ["'self'", 'blob:'],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", "data:"],
+        connectSrc: ["'self'", "https://chatting-app-backend-6y18.onrender.com"],
+        // Add other directives as needed
+      },
+    },
+  })
+);
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'client/build')));
+
+// Other middleware and routes
+
+// Catch-all handler to serve the React app for any request that doesn't match an API route
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });
 
 
