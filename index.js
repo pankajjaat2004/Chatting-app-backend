@@ -44,7 +44,7 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 const allowedOrigins = [
-  // 'http://localhost:3000',
+  'https://chatting-clone-app-ac4b77e868b3.herokuapp.com',
   'https://chatt-app-3n7a.onrender.com'
 ];
 
