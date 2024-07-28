@@ -42,7 +42,6 @@ const register = asyncHandler(async (req, res, next) => {
     maxAge: 3 * 24 * 60 * 60 * 1000
   })
 
-  console.log('Register Success');
   return res.json({ data: { ...user._doc,accessToken }, message: 'Register Success' })
 })
 
