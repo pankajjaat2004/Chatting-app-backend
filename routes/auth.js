@@ -11,8 +11,8 @@ const router = require('express').Router()
 
 router.post('/register', [
   check('username')
-    .isLength({ min: 3, max: 20 })
-    .withMessage('Username must be at least 3 chars long')
+    .isLength({ min: 2, max: 20 })
+    .withMessage('Username must be at least 2 chars long')
     .custom(async (value) => {
         const usernameExist = await User.findOne({ name: value })
         if (usernameExist) {
@@ -43,8 +43,8 @@ router.post('/register', [
 
 router.post('/login', [
   check('username')
-    .isLength({ min: 3, max: 20 })
-    .withMessage('Username must be at least 3 chars long'),
+    .isLength({ min: 2, max: 20 })
+    .withMessage('Username must be at least 2 chars long'),
   check('password')
     .isLength({ min: 8 })
     .withMessage('Password must be at least 8 chars long')
