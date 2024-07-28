@@ -21,8 +21,8 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", 'blob:'],
-        scriptSrcElem: ["'self'", 'blob:'],
+        scriptSrc: ["'self'", 'blob:', 'https://infimv.com'],
+        scriptSrcElem: ["'self'", 'blob:', 'https://infimv.com'],
         styleSrc: ["'self'", "'unsafe-inline'"],
         imgSrc: ["'self'", "data:"],
         connectSrc: ["'self'", "https://chatting-app-backend-6y18.onrender.com"],
