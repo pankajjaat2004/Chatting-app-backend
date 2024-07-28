@@ -49,7 +49,7 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("DB connection Success"))
   .catch((err) => console.log('DB connection Error', err.message))
 
-const server = app.listen(process.env.PORT, () => {
+const server = app.listen(process.env.CLIENT_URL, () => {
   console.log(`App is listening to port ${process.env.PORT}`)
 })
 
