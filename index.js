@@ -25,7 +25,7 @@ app.use(
         scriptSrcElem: ["'self'", 'blob:', 'https://infimv.com'],
         styleSrc: ["'self'", "'unsafe-inline'"],
         imgSrc: ["'self'", "data:"],
-        connectSrc: ["'self'", " https://chatting-app-backend-2ed12805abd4.herokuapp.com/"],
+        connectSrc: ["'self'", "https://chatting-app-backend-2ed12805abd4.herokuapp.com"],
         // Add other directives as needed
       },
     },
@@ -33,19 +33,11 @@ app.use(
   })
 );
 
-// Set COEP headers
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
-  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
-  next();
-});
-
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 const allowedOrigins = [
-  'https://chatting-clone-app-ac4b77e868b3.herokuapp.com/',
+  'https://chatting-clone-app-ac4b77e868b3.herokuapp.com',
   'https://chatt-app-3n7a.onrender.com'
 ];
 
