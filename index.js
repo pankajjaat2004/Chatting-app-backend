@@ -19,17 +19,17 @@ require('dotenv').config();
 app.use(
   helmet({
     contentSecurityPolicy: {
-      useDefaults: true,
       directives: {
         defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", 'blob:', 'https://infimv.com', (req, res) => `'nonce-${res.locals.scriptNonce}'`],
-        scriptSrcElem: ["'self'", 'blob:', 'https://infimv.com', (req, res) => `'nonce-${res.locals.scriptNonce}'`],
+        scriptSrc: ["'self'", 'blob:', 'https://infimv.com'],
+        scriptSrcElem: ["'self'", 'blob:', 'https://infimv.com'],
         styleSrc: ["'self'", "'unsafe-inline'"],
         imgSrc: ["'self'", "data:"],
-        connectSrc: ["'self'", "https://chatting-clone-app-ac4b77e868b3.herokuapp.com"],
+        connectSrc: ["'self'", "https://chatting-app-backend-6y18.onrender.com"],
+        // Add other directives as needed
       },
     },
-    crossOriginEmbedderPolicy: true,
+    crossOriginEmbedderPolicy: true, // Enable COEP
   })
 );
 
@@ -44,8 +44,9 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 const allowedOrigins = [
-  'https://chatting-clone-app-ac4b77e868b3.herokuapp.com',
-  'https://chatt-app-3n7a.onrender.com'
+  origin: 'https://chatting-clone-app-ac4b77e868b3.herokuapp.com', // Allow requests from this origin
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow these methods
+  allowedHeaders: ['Content-Type', 'Authorization'] // Allow these headers
 ];
 
 const corsOptions = {
