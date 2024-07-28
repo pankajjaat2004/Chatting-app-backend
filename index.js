@@ -44,9 +44,7 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 const allowedOrigins = [
-  origin:['https://chatting-clone-app-ac4b77e868b3.herokuapp.com',""], // Allow requests from this origin
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow these methods
-  allowedHeaders: ['Content-Type', 'Authorization'] // Allow these headers
+  'https://chatting-clone-app-ac4b77e868b3.herokuapp.com'
 ];
 
 const corsOptions = {
@@ -59,10 +57,12 @@ const corsOptions = {
     }
     return callback(null, true);
   },
-  credentials: true, // Allow credentials (cookies, etc.)
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow these methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Allow these headers
+  credentials: true // Allow credentials (cookies, etc.)
 };
 
-app.use(cors(allowedOrigins));
+app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
