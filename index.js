@@ -7,6 +7,7 @@ const userRoutes = require('./routes/user');
 const { initSocket } = require('./socket/index');
 const helmet = require('helmet');
 const path = require('path');
+const crypto = require('crypto');
 
 const PORT = process.env.PORT || 5001;
 
@@ -15,21 +16,28 @@ mongoose.set('strictQuery', true);
 const app = express();
 require('dotenv').config();
 
+// Generate a random nonce
+const scriptNonce = crypto.randomBytes(16).toString('base64');
+
+app.use((req, res, next) => {
+  res.locals.scriptNonce = scriptNonce;
+  next();
+});
+
 // Use Helmet to set CSP and other security headers
 app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", 'blob:', 'https://infimv.com'],
-        scriptSrcElem: ["'self'", 'blob:', 'https://infimv.com'],
+        scriptSrc: ["'self'", 'blob:', 'https://infimv.com', `'nonce-${scriptNonce}'`],
+        scriptSrcElem: ["'self'", 'blob:', 'https://infimv.com', `'nonce-${scriptNonce}'`],
         styleSrc: ["'self'", "'unsafe-inline'"],
         imgSrc: ["'self'", "data:"],
         connectSrc: ["'self'", "https://chat-app-backend-a9219175d40b.herokuapp.com"],
-        // Add other directives as needed
       },
     },
-    crossOriginEmbedderPolicy: true, // Enable COEP
+    crossOriginEmbedderPolicy: true,
   })
 );
 
@@ -44,7 +52,7 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 const allowedOrigins = [
-  'https://chatting-clone-app-ac4b77e868b3.herokuapp.com'
+  'https://chatting-clone-app-ac4b77e868b3.herokuapp.com', ""
 ];
 
 const corsOptions = {
