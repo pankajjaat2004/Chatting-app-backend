@@ -6,6 +6,8 @@ const authRoutes = require('./routes/auth')
 const userRoutes = require('./routes/user')
 const { initSocket } = require('./socket/index')
 
+PORT=process.env.PORT || 5001;
+
 mongoose.set('strictQuery', true);
 
 const app = express()
@@ -49,7 +51,7 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("DB connection Success"))
   .catch((err) => console.log('DB connection Error', err.message))
 
-const server = app.listen(process.env.CLIENT_URL, () => {
+const server = app.listen(PORT, () => {
   console.log(`App is listening to port ${process.env.PORT}`)
 })
 
