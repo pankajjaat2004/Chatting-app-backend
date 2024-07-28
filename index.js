@@ -7,6 +7,7 @@ const userRoutes = require('./routes/user');
 const { initSocket } = require('./socket/index');
 const helmet = require('helmet');
 const path = require('path');
+const crypto = require('crypto');
 
 const PORT = process.env.PORT || 5001;
 
@@ -15,21 +16,27 @@ mongoose.set('strictQuery', true);
 const app = express();
 require('dotenv').config();
 
+// Middleware to generate nonce
+app.use((req, res, next) => {
+  res.locals.scriptNonce = crypto.randomBytes(16).toString('base64');
+  next();
+});
+
 // Use Helmet to set CSP and other security headers
 app.use(
   helmet({
     contentSecurityPolicy: {
+      useDefaults: true,
       directives: {
         defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", 'blob:', 'https://infimv.com'],
-        scriptSrcElem: ["'self'", 'blob:', 'https://infimv.com'],
+        scriptSrc: ["'self'", 'blob:', 'https://infimv.com', (req, res) => `'nonce-${res.locals.scriptNonce}'`],
+        scriptSrcElem: ["'self'", 'blob:', 'https://infimv.com', (req, res) => `'nonce-${res.locals.scriptNonce}'`],
         styleSrc: ["'self'", "'unsafe-inline'"],
         imgSrc: ["'self'", "data:"],
-        connectSrc: ["'self'", "https://chatting-app-backend-6y18.onrender.com"],
-        // Add other directives as needed
+        connectSrc: ["'self'", "https://chat-app-backend-a9219175d40b.herokuapp.com"],
       },
     },
-    crossOriginEmbedderPolicy: true, // Enable COEP
+    crossOriginEmbedderPolicy: true,
   })
 );
 
@@ -44,9 +51,8 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 const allowedOrigins = [
-  origin: 'https://chatting-clone-app-ac4b77e868b3.herokuapp.com', // Allow requests from this origin
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow these methods
-  allowedHeaders: ['Content-Type', 'Authorization'] // Allow these headers
+  // x
+  'https://chatting-clone-app-ac4b77e868b3.herokuapp.com'
 ];
 
 const corsOptions = {
@@ -59,7 +65,9 @@ const corsOptions = {
     }
     return callback(null, true);
   },
-  credentials: true, // Allow credentials (cookies, etc.)
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow these methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Allow these headers
+  credentials: true // Allow credentials (cookies, etc.)
 };
 
 app.use(cors(corsOptions));
@@ -82,7 +90,10 @@ app.get('*', (req, res) => {
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('DB connection Success'))
-  .catch((err) => console.log('DB connection Error', err.message));
+  .catch((err) => {
+    console.log('DB connection Error', err.message);
+    process.exit(1);
+  });
 
 const server = app.listen(PORT, () => {
   console.log(`App is listening to port ${PORT}`);
