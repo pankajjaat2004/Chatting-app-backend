@@ -25,7 +25,7 @@ app.use(
         scriptSrcElem: ["'self'", 'blob:', 'https://infimv.com'],
         styleSrc: ["'self'", "'unsafe-inline'"],
         imgSrc: ["'self'", "data:"],
-        connectSrc: ["'self'", "https://chatting-app-backend-6y18.onrender.com"],
+        connectSrc: ["'self'", "https://chat-app-backend-a9219175d40b.herokuapp.com"],
         // Add other directives as needed
       },
     },
