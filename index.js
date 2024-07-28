@@ -6,12 +6,18 @@ const authRoutes = require('./routes/auth')
 const userRoutes = require('./routes/user')
 const { initSocket } = require('./socket/index')
 
-PORT=process.env.PORT || 5001;
+const PORT=process.env.PORT || 5001;
 
 mongoose.set('strictQuery', true);
 
 const app = express()
 require('dotenv').config()
+
+app.use((req, res, next) => {
+  res.setHeader("Content-Security-Policy", "default-src 'self'; script-src 'self' 'blob:'");
+  next();
+});
+
 
 const corsOptions = {
   origin: process.env.CLIENT_URL,
