@@ -29,8 +29,15 @@ app.use(
         // Add other directives as needed
       },
     },
+    crossOriginEmbedderPolicy: true, // Enable COEP
   })
 );
+
+app.use((req, res, next) => {
+  res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+  next();
+});
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
