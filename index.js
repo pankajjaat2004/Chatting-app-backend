@@ -37,11 +37,6 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 
 // Other middleware and routes
 
-// Catch-all handler to serve the React app for any request that doesn't match an API route
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-});
-
 
 const corsOptions = {
   origin: process.env.CLIENT_URL,
@@ -76,6 +71,11 @@ app.use('/api/users', userRoutes)
 app.get('/', (req, res) => {
   res.send('Hi there!')
 })
+
+// Catch-all handler to serve the React app for any request that doesn't match an API route
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+});
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("DB connection Success"))
