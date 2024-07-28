@@ -108,7 +108,7 @@ const initSocket = (server, corsOptions) => {
         const socketId = onlineUsers.find(({ userId }) => userId === invitedUser)?.socketId
         
         if (socketId) {
-          socket.to(socketId).emit('INVITED_TO_ROOM', { message: `${creator} 已將你加入 ${name} 聊天室`})
+          socket.to(socketId).emit('INVITED_TO_ROOM', { message: `${creator} invited ${name} to room`})
         }
       })
     })
