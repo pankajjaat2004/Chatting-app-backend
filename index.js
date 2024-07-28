@@ -19,17 +19,17 @@ require('dotenv').config();
 app.use(
   helmet({
     contentSecurityPolicy: {
+      useDefaults: true,
       directives: {
         defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", 'blob:', 'https://infimv.com'],
-        scriptSrcElem: ["'self'", 'blob:', 'https://infimv.com'],
+        scriptSrc: ["'self'", 'blob:', 'https://infimv.com', (req, res) => `'nonce-${res.locals.scriptNonce}'`],
+        scriptSrcElem: ["'self'", 'blob:', 'https://infimv.com', (req, res) => `'nonce-${res.locals.scriptNonce}'`],
         styleSrc: ["'self'", "'unsafe-inline'"],
         imgSrc: ["'self'", "data:"],
-        connectSrc: ["'self'", "https://chatting-app-backend-6y18.onrender.com"],
-        // Add other directives as needed
+        connectSrc: ["'self'", "https://chat-app-backend-a9219175d40b.herokuapp.com"],
       },
     },
-    crossOriginEmbedderPolicy: true, // Enable COEP
+    crossOriginEmbedderPolicy: true,
   })
 );
 
