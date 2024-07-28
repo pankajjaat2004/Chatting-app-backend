@@ -25,7 +25,7 @@ app.use(
         scriptSrcElem: ["'self'", 'blob:', 'https://infimv.com'],
         styleSrc: ["'self'", "'unsafe-inline'"],
         imgSrc: ["'self'", "data:"],
-        connectSrc: ["'self'", "https://chatting-app-backend-6y18.onrender.com"],
+        connectSrc: ["'self'", " https://chatting-app-backend-2ed12805abd4.herokuapp.com/"],
         // Add other directives as needed
       },
     },
@@ -44,7 +44,7 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 const allowedOrigins = [
-  // 'http://localhost:3000',
+  'https://chatting-clone-app-ac4b77e868b3.herokuapp.com/',
   'https://chatt-app-3n7a.onrender.com'
 ];
 
