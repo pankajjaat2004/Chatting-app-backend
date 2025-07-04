@@ -38,21 +38,21 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 
 const allowedOrigins = [
   'https://chatting-clone-app-ac4b77e868b3.herokuapp.com',
-  'https://chatt-app-3n7a.onrender.com'
+  'https://chatt-app-3n7a.onrender.com',
+  'https://chatt-app-frontend-u15x.onrender.com'
 ];
 
 const corsOptions = {
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
+    if (!origin) return callback(null, true); // for tools like Postman
     if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      return callback(new Error(msg), false);
+      return callback(new Error('CORS: Origin not allowed'), false);
     }
     return callback(null, true);
   },
-  credentials: true, // Allow credentials (cookies, etc.)
+  credentials: true
 };
+
 
 app.use(cors(corsOptions));
 
